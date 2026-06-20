@@ -27,6 +27,7 @@ async function bootstrap() {
 			'karenheister5@gmail.com'
 		)
 		.addBearerAuth()
+		.addTag('App', 'Check server health')
 		.addTag('Auth', 'Operations related to user authentication')
 		.addTag('Projects', 'Project management endpoints')
 		.addTag('Tasks', 'Task tracking and assignment')
@@ -41,7 +42,6 @@ async function bootstrap() {
 		jsonDocumentUrl: '/docs-json',
 		swaggerOptions: {
 			persistAuthorization: true,
-			docExpansion: 'none',
 			displayRequestDuration: true
 		}
 	});

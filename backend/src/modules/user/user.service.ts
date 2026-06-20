@@ -6,6 +6,28 @@ import { hash } from 'argon2';
 export class UserService {
 	public constructor(private readonly prismaService: PrismaService) {}
 
+	public async create(data: {
+		email: string;
+		password: string;
+		name?: string;
+	}) {
+		return await this.prismaService.user.create({
+			data: {
+				email: data.email,
+				password: await hash(data.password),
+				name: data.name
+			}
+		});
+	}
+
+	public async findByEmail(email: string) {
+		return await this.prismaService.user.findUnique({
+			where: {
+				email: email
+			}
+		});
+	}
+
 	public async findById(userId: string) {
 		const user = await this.prismaService.user.findUnique({
 			where: {
@@ -20,25 +42,15 @@ export class UserService {
 		return user;
 	}
 
-	public async findByEmail(email: string) {
-		return await this.prismaService.user.findUnique({
-			where: {
-				email: email
-			}
-		});
-	}
+	public async logout() {}
 
-	public async create(data: {
-		email: string;
-		password: string;
-		name?: string;
-	}) {
-		return await this.prismaService.user.create({
-			data: {
-				email: data.email,
-				password: await hash(data.password),
-				name: data.name
+	public async delete(userId: string) {
+		await this.prismaService.user.delete({
+			where: {
+				id: userId
 			}
 		});
+
+		return { message: 'ok' };
 	}
 }

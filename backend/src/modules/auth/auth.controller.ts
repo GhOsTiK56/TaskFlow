@@ -12,6 +12,7 @@ import { LoginRequestDto } from './dto/requests/login.request.dto';
 export class AuthController {
 	constructor(private readonly authService: AuthService) {}
 
+	@Post('register')
 	@ApiOperation({
 		summary: 'Register user',
 		description: 'Register user'
@@ -20,13 +21,13 @@ export class AuthController {
 		type: TokensResponseDto
 	})
 	@HttpCode(HttpStatus.CREATED)
-	@Post('register')
 	public register(
 		@Body() data: RegisterRequestDto
 	): Promise<TokensResponseDto> {
 		return this.authService.register(data);
 	}
 
+	@Post('login')
 	@ApiOperation({
 		summary: 'Login to account',
 		description: 'Login to account'
@@ -36,7 +37,6 @@ export class AuthController {
 		type: TokensResponseDto
 	})
 	@HttpCode(HttpStatus.OK)
-	@Post('login')
 	public login(@Body() data: LoginRequestDto): Promise<TokensResponseDto> {
 		return this.authService.login(data);
 	}
