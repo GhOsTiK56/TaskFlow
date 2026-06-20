@@ -1,6 +1,5 @@
 import { PrismaService } from '@/infrastructure/prisma/prisma.service';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { hash } from 'argon2';
 
 @Injectable()
 export class UserService {
@@ -14,7 +13,7 @@ export class UserService {
 		return await this.prismaService.user.create({
 			data: {
 				email: data.email,
-				password: await hash(data.password),
+				password: data.password,
 				name: data.name
 			}
 		});
@@ -41,8 +40,6 @@ export class UserService {
 
 		return user;
 	}
-
-	public async logout() {}
 
 	public async delete(userId: string) {
 		await this.prismaService.user.delete({

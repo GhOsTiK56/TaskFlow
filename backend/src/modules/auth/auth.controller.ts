@@ -1,12 +1,19 @@
 import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { RegisterRequestDto, TokensResponseDto } from './dto';
 import {
+	LoginRequestDto,
+	OkResponseDto,
+	RefreshRequestDto,
+	RegisterRequestDto,
+	TokensResponseDto
+} from './dto';
+import {
+	ApiBearerAuth,
 	ApiCreatedResponse,
 	ApiOkResponse,
 	ApiOperation
 } from '@nestjs/swagger';
-import { LoginRequestDto } from './dto/requests/login.request.dto';
+import { CurrentUser, Protected } from '@/common';
 
 @Controller('auth')
 export class AuthController {
@@ -39,5 +46,33 @@ export class AuthController {
 	@HttpCode(HttpStatus.OK)
 	public login(@Body() data: LoginRequestDto): Promise<TokensResponseDto> {
 		return this.authService.login(data);
+	}
+
+	@Post('refresh')
+	@ApiOperation({
+		summary: 'Get new refresh and access tokens',
+		description: 'Return new refresh and access tokens'
+	})
+	@ApiOkResponse({
+		description: 'return access token',
+		type: TokensResponseDto
+	})
+	public refresh(@Body() data: RefreshRequestDto): Promise<TokensResponseDto> {
+		return this.authService.refresh(data.refreshToken);
+	}
+
+	@Post('logout')
+	@ApiOperation({
+		summary: 'Logout',
+		description: 'Logout'
+	})
+	@ApiOkResponse({
+		description: 'Logout',
+		type: OkResponseDto
+	})
+	@ApiBearerAuth()
+	@Protected()
+	public logout(@CurrentUser() userId: string): Promise<OkResponseDto> {
+		return this.authService.logout(userId);
 	}
 }

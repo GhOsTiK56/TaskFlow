@@ -1,7 +1,11 @@
-import { Controller, Delete, Param } from '@nestjs/common';
+import { Controller, Delete } from '@nestjs/common';
 import { UserService } from './user.service';
-import { ApiOperation } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
+import { CurrentUser, Protected } from '@/common';
+import { OkResponseDto } from '../auth/dto';
 
+@ApiBearerAuth()
+@Protected()
 @Controller('user')
 export class UserController {
 	constructor(private readonly userService: UserService) {}
@@ -11,7 +15,7 @@ export class UserController {
 		description: 'Delete user profile'
 	})
 	@Delete(':id')
-	public delete(@Param('id') userId: string) {
+	public delete(@CurrentUser() userId: string): Promise<OkResponseDto> {
 		return this.userService.delete(userId);
 	}
 }
