@@ -16,8 +16,7 @@ import {
 	ApiOperation,
 	ApiUnauthorizedResponse
 } from '@nestjs/swagger';
-import { CurrentUser, Protected } from '@/common';
-import { ErrorResponseDto } from '@/common/dto';
+import { CurrentUser, ErrorResponseDto, Protected } from '@/common';
 
 @Controller('auth')
 export class AuthController {

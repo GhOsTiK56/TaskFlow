@@ -6,9 +6,8 @@ import {
 	ApiOperation,
 	ApiUnauthorizedResponse
 } from '@nestjs/swagger';
-import { CurrentUser, Protected } from '@/common';
+import { CurrentUser, ErrorResponseDto, Protected } from '@/common';
 import { OkResponseDto } from '../auth/dto';
-import { ErrorResponseDto } from '@/common/dto';
 import { UserProfileResponseDto } from './dto';
 
 @ApiBearerAuth()

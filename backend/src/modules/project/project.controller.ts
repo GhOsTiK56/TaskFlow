@@ -10,7 +10,7 @@ import {
 	Post
 } from '@nestjs/common';
 import { ProjectService } from './project.service';
-import { CurrentUser, Protected } from '@/common';
+import { CurrentUser, ErrorResponseDto, Protected } from '@/common';
 import {
 	CreateProjectRequestDto,
 	ProjectResponseDto,
@@ -24,7 +24,6 @@ import {
 	ApiOkResponse,
 	ApiOperation
 } from '@nestjs/swagger';
-import { ErrorResponseDto } from '@/common/dto';
 import { OkResponseDto } from '../auth/dto';
 
 @Protected()
