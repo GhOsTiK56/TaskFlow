@@ -41,11 +41,12 @@ export class AuthService {
 
 	public async register(data: RegisterRequestDto): Promise<TokensResponseDto> {
 		const userIsExist = await this.userService.findByEmail(data.email);
-		const hashedPassword = await hash(data.password);
 
 		if (userIsExist) {
 			throw new ConflictException('User already exits');
 		}
+
+		const hashedPassword = await hash(data.password);
 
 		const user = await this.userService.create({
 			email: data.email,
@@ -60,7 +61,7 @@ export class AuthService {
 		const user = await this.userService.findByEmail(data.email);
 
 		if (!user) {
-			throw new NotFoundException('User not found');
+			throw new NotFoundException('Invalid credentials');
 		}
 
 		const isValidPassword = await verify(user.password, data.password);
@@ -84,7 +85,7 @@ export class AuthService {
 				throw new UnauthorizedException('Invalid refresh token');
 			}
 		} catch {
-			throw new UnauthorizedException('Invalid refresh token with:');
+			throw new UnauthorizedException('Invalid refresh token');
 		}
 
 		const storedToken = await this.authRepository.findTokenByJti(payload.jti);
