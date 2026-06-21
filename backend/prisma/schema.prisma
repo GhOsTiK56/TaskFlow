@@ -20,13 +20,15 @@ model User {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   RefreshTokens RefreshToken[]
+  projects      Project[]
+  tasks         Task[]
 
   @@map("users")
 }
 
 model RefreshToken {
   id     String @id @default(nanoid())
-  userId String
+  userId String @map("user_id")
 
   jti       String   @unique
   tokenHash String   @map("token_hash")
@@ -39,4 +41,66 @@ model RefreshToken {
 
   @@index([userId])
   @@map("refresh_tokens")
+}
+
+model Project {
+  id     String @id @default(nanoid())
+  userId String @map("user_id")
+
+  name        String
+  description String?
+  color       String?
+  icon        String?
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  user  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tasks Task[]
+
+  @@index([userId])
+  @@map("projects")
+}
+
+model Task {
+  id        String @id @default(nanoid())
+  userId    String @map("user_id")
+  projectId String @map("project_id")
+
+  title       String
+  description String?
+
+  status   TaskStatus @default(TODO)
+  priority Priority   @default(MEDIUM)
+
+  dueDate DateTime?
+
+  tags String[] @default([])
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([userId, status])
+  @@index([userId, dueDate])
+  @@index([projectId])
+  @@map("tasks")
+}
+
+enum TaskStatus {
+  TODO
+  IN_PROGRESS
+  DONE
+  ARCHIVED
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
 }

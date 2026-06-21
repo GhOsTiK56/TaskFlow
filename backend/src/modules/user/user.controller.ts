@@ -37,6 +37,8 @@ export class UserController {
 		return this.userService.findById(userId);
 	}
 
+	//TODO: Добавить обновление профиля пользователя
+
 	@Delete('@me')
 	@ApiOperation({
 		summary: 'Delete current user account',

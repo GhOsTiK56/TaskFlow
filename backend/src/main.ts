@@ -29,9 +29,8 @@ async function bootstrap() {
 		.addBearerAuth()
 		.addTag('App', 'Check server health')
 		.addTag('Auth', 'Operations related to user authentication')
-		.addTag('Projects', 'Project management endpoints')
-		.addTag('Tasks', 'Task tracking and assignment')
-		.addTag('Tags', 'Labels for task categorization')
+		.addTag('Project', 'Project management endpoints')
+		.addTag('Task', 'Task tracking and assignment')
 		.build();
 
 	const documentFactory = () =>
