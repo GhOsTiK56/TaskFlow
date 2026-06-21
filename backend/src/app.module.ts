@@ -6,6 +6,7 @@ import { PrismaModule } from './infrastructure/prisma/prisma.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { UserModule } from './modules/user/user.module';
 import { ProjectModule } from './modules/project/project.module';
+import { TaskModule } from './modules/task/task.module';
 @Module({
 	imports: [
 		ConfigModule.forRoot({
@@ -14,7 +15,8 @@ import { ProjectModule } from './modules/project/project.module';
 		PrismaModule,
 		AuthModule,
 		UserModule,
-		ProjectModule
+		ProjectModule,
+		TaskModule
 	],
 	controllers: [AppController],
 	providers: [AppService]
