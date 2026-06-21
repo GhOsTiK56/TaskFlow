@@ -1,5 +1,7 @@
 import { PrismaService } from '@/infrastructure/prisma/prisma.service';
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { UserProfileResponseDto } from './dto';
+import { OkResponseDto } from '../auth/dto';
 
 @Injectable()
 export class UserService {
@@ -27,7 +29,7 @@ export class UserService {
 		});
 	}
 
-	public async findById(userId: string) {
+	public async findById(userId: string): Promise<UserProfileResponseDto> {
 		const user = await this.prismaService.user.findUnique({
 			where: {
 				id: userId
@@ -38,10 +40,13 @@ export class UserService {
 			throw new NotFoundException('User not found');
 		}
 
-		return user;
+		return {
+			email: user.email,
+			name: user.name || undefined
+		};
 	}
 
-	public async delete(userId: string) {
+	public async delete(userId: string): Promise<OkResponseDto> {
 		await this.prismaService.user.delete({
 			where: {
 				id: userId

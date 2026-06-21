@@ -5,7 +5,12 @@ import {
 	UnauthorizedException
 } from '@nestjs/common';
 import { UserService } from '../user/user.service';
-import { LoginRequestDto, RegisterRequestDto, TokensResponseDto } from './dto';
+import {
+	LoginRequestDto,
+	OkResponseDto,
+	RegisterRequestDto,
+	TokensResponseDto
+} from './dto';
 import { verify } from 'argon2';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
@@ -36,16 +41,15 @@ export class AuthService {
 
 	public async register(data: RegisterRequestDto): Promise<TokensResponseDto> {
 		const userIsExist = await this.userService.findByEmail(data.email);
+		const hashedPassword = await hash(data.password);
 
 		if (userIsExist) {
 			throw new ConflictException('User already exits');
 		}
 
-		//TODO: не надо проверять пользователя, можно сразу ловить ошибку Prisma 2002
-
 		const user = await this.userService.create({
 			email: data.email,
-			password: await hash(data.password),
+			password: hashedPassword,
 			name: data.name
 		});
 
@@ -79,8 +83,8 @@ export class AuthService {
 			if (!payload?.id || !payload?.jti) {
 				throw new UnauthorizedException('Invalid refresh token');
 			}
-		} catch (error) {
-			throw new UnauthorizedException('Invalid refresh token with:', error);
+		} catch {
+			throw new UnauthorizedException('Invalid refresh token with:');
 		}
 
 		const storedToken = await this.authRepository.findTokenByJti(payload.jti);
@@ -110,7 +114,7 @@ export class AuthService {
 		return this.generateTokens(payload.id);
 	}
 
-	public async logout(userId: string) {
+	public async logout(userId: string): Promise<OkResponseDto> {
 		if (!userId) {
 			throw new UnauthorizedException('User ID is required for logout');
 		}
