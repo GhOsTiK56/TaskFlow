@@ -3,7 +3,7 @@ import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreateProjectRequestDto {
 	@ApiProperty({
-		example: 'NameTask'
+		example: 'NameProject'
 	})
 	@IsString()
 	@IsNotEmpty()
