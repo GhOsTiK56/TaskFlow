@@ -54,7 +54,10 @@ export class ProjectController {
 		@CurrentUser() userId: string,
 		@Body() data: CreateProjectRequestDto
 	): Promise<ProjectResponseDto> {
-		return this.projectService.create(userId, data);
+		return this.projectService.create({
+			userId,
+			...data
+		});
 	}
 
 	@Get()
@@ -87,7 +90,7 @@ export class ProjectController {
 		@Param('id') id: string,
 		@Body() data: UpdateProjectRequestDto
 	): Promise<ProjectResponseDto> {
-		return this.projectService.update(userId, id, data);
+		return this.projectService.update({ userId, id, ...data });
 	}
 
 	@Delete(':id')
