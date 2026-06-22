@@ -29,6 +29,7 @@ async function bootstrap() {
 		.addBearerAuth()
 		.addTag('App', 'Check server health')
 		.addTag('Auth', 'Operations related to user authentication')
+		.addTag('User', 'Work with user profile')
 		.addTag('Project', 'Project management endpoints')
 		.addTag('Task', 'Task tracking and assignment')
 		.build();
