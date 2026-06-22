@@ -28,7 +28,7 @@ import { OkResponseDto } from '../auth/dto';
 
 @Protected()
 @ApiBearerAuth()
-@Controller('project')
+@Controller('projects')
 export class ProjectController {
 	constructor(private readonly projectService: ProjectService) {}
 
