@@ -1,40 +1,25 @@
-import { PrismaService } from '@/infrastructure/prisma/prisma.service';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { UserProfileResponseDto } from './dto';
 import { OkResponseDto } from '../auth/dto';
+import { UserRepository } from './user.repository';
 
 @Injectable()
 export class UserService {
-	public constructor(private readonly prismaService: PrismaService) {}
+	public constructor(private readonly userRepository: UserRepository) {}
 
 	public async create(data: {
 		email: string;
 		password: string;
 		name?: string;
 	}) {
-		return await this.prismaService.user.create({
-			data: {
-				email: data.email,
-				password: data.password,
-				name: data.name
-			}
-		});
+		return await this.userRepository.create(data);
 	}
 
 	public async findByEmail(email: string) {
-		return await this.prismaService.user.findUnique({
-			where: {
-				email: email
-			}
-		});
+		return await this.userRepository.findByEmail(email);
 	}
 
-	public async findById(userId: string): Promise<UserProfileResponseDto> {
-		const user = await this.prismaService.user.findUnique({
-			where: {
-				id: userId
-			}
-		});
+	public async findById(userId: string) {
+		const user = await this.userRepository.findById(userId);
 
 		if (!user) {
 			throw new NotFoundException('User not found');
@@ -47,11 +32,7 @@ export class UserService {
 	}
 
 	public async delete(userId: string): Promise<OkResponseDto> {
-		await this.prismaService.user.delete({
-			where: {
-				id: userId
-			}
-		});
+		await this.userRepository.delete(userId);
 
 		return { message: 'ok' };
 	}

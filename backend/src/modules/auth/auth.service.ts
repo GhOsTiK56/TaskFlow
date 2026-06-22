@@ -5,12 +5,7 @@ import {
 	UnauthorizedException
 } from '@nestjs/common';
 import { UserService } from '../user/user.service';
-import {
-	LoginRequestDto,
-	OkResponseDto,
-	RegisterRequestDto,
-	TokensResponseDto
-} from './dto';
+import { OkResponseDto, TokensResponseDto } from './dto';
 import { verify } from 'argon2';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
@@ -19,6 +14,7 @@ import { nanoid } from 'nanoid';
 import { hash } from 'argon2';
 import { JwtPayload } from './interfaces';
 import { AuthRepository } from './auth.repository';
+import { LoginUserInput, RegisterUserInput } from './types';
 
 @Injectable()
 export class AuthService {
@@ -39,7 +35,7 @@ export class AuthService {
 		);
 	}
 
-	public async register(data: RegisterRequestDto): Promise<TokensResponseDto> {
+	public async register(data: RegisterUserInput): Promise<TokensResponseDto> {
 		const userIsExist = await this.userService.findByEmail(data.email);
 
 		if (userIsExist) {
@@ -57,7 +53,7 @@ export class AuthService {
 		return this.generateTokens(user.id);
 	}
 
-	public async login(data: LoginRequestDto): Promise<TokensResponseDto> {
+	public async login(data: LoginUserInput): Promise<TokensResponseDto> {
 		const user = await this.userService.findByEmail(data.email);
 
 		if (!user) {
