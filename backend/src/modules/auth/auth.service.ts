@@ -8,8 +8,8 @@ import { OkResponseDto, TokensResponseDto } from './dto';
 import { verify } from 'argon2';
 import { hash } from 'argon2';
 import { AuthRepository } from './auth.repository';
-import { LoginUserInput, RegisterUserInput } from './types';
 import { TokenService } from './token.service';
+import { LoginUserInput, RegisterUserInput } from './interfaces';
 
 @Injectable()
 export class AuthService {
