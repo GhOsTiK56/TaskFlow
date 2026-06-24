@@ -1,8 +1,7 @@
-export type UpdateProjectInput = {
+export interface CreateProjectInput {
 	userId: string;
-	id: string;
-	name?: string;
+	name: string;
 	description?: string;
 	color?: string;
 	icon?: string;
-};
+}

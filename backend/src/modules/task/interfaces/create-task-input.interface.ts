@@ -1,6 +1,6 @@
 import { Priority, TaskStatus } from '@prisma/generated/client';
 
-export type CreateTaskInput = {
+export interface CreateTaskInput {
 	userId: string;
 	projectId: string;
 	title: string;
@@ -8,4 +8,4 @@ export type CreateTaskInput = {
 	status: TaskStatus;
 	priority: Priority;
 	dueDate?: Date;
-};
+}

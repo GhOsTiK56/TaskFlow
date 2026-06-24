@@ -1,7 +1,7 @@
 import { PrismaService } from '@/infrastructure/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
 import { Project } from '@prisma/generated/client';
-import { CreateProjectInput, UpdateProjectInput } from './types';
+import type { CreateProjectInput, UpdateProjectInput } from './interfaces';
 
 @Injectable()
 export class ProjectRepository {

@@ -7,8 +7,8 @@ import { ProjectResponseDto } from './dto';
 import { OkResponseDto } from '../auth/dto';
 import { Project } from '@prisma/generated/client';
 import { plainToInstance } from 'class-transformer';
-import type { CreateProjectInput, UpdateProjectInput } from './types';
 import { ProjectRepository } from './project.repository';
+import { CreateProjectInput, UpdateProjectInput } from './interfaces';
 
 @Injectable()
 export class ProjectService {
